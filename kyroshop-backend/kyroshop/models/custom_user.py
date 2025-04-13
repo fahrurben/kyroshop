@@ -20,6 +20,6 @@ class CustomUser(AbstractUser):
         return self.email
 
     @staticmethod
-    def create(username, email, password, role, birthday):
-        user = CustomUser.objects.create_user(username, email, password, role=role, birthday=birthday)
+    def create(username, email, password, **kwargs):
+        user = CustomUser.objects.create_user(username, email, password, **kwargs)
         return user
