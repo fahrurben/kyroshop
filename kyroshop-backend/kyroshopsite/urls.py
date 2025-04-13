@@ -22,11 +22,16 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from kyroshop.views import RegisterView
+from kyroshop.views import RegisterView, CategoryView
+
+router = routers.SimpleRouter(trailing_slash=False)
+router.register(r'categories', CategoryView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/register', RegisterView.as_view(), name='register'),
     path('api/token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    path('api/', include(router.urls)),
 ]
