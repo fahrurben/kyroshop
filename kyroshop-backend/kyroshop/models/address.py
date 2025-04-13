@@ -4,7 +4,7 @@ from .custom_user import CustomUser
 
 
 class Address(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     fullname = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=12)
     address = models.CharField(max_length=1000)
