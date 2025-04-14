@@ -10,5 +10,8 @@ class Variant(models.Model):
     is_default = models.BooleanField()
     stock = models.IntegerField()
 
+    class Meta:
+        unique_together = ['product', 'name']
+
     def __str__(self):
         return self.slug

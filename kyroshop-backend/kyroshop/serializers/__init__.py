@@ -3,3 +3,4 @@ from .user_serializer import UserSerializer
 from .category_serializer import CategorySerializer
 from .profile_serializer import ProfileSerializer
 from .address_serializer import AddressSerializer
+from .product_serializer import ProductSerializer

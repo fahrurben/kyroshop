@@ -4,8 +4,9 @@ from .category import Category
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.CharField(max_length=255, unique=True)
+    description = models.TextField(default='')
     is_active = models.BooleanField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
     category = models.ForeignKey(Category, related_name="products", on_delete=models.CASCADE)
