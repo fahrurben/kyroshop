@@ -61,3 +61,57 @@ class ProductSerializer(serializers.ModelSerializer):
                 Variant.objects.create(product=product, slug=variant_slug, is_default=is_default, **variant)
 
         return product
+
+    def update(self, instance, validated_data):
+        current_user = self.context['user']
+
+        image_set = validated_data.pop('images') if 'images' in validated_data else None
+        variant_set = validated_data.pop('variants') if 'variants' in validated_data else None
+        slug = slugify(validated_data.get('name'))
+        category = Category.objects.get(id=validated_data.get('category_id'))
+
+        instance.name = validated_data.get('name', instance.name)
+        instance.slug = slug
+        instance.description = validated_data.get('description', instance.description)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.price = validated_data.get('price', instance.price)
+        instance.category = category
+        instance.updated_by = current_user
+        instance.save()
+
+        existing_image_ids = instance.images.values_list('id', flat=True)
+        update_image_ids = [image_data.get('id') for image_data in image_set if image_data.get('id') is not None]
+        deleted_image_ids = set(existing_image_ids).difference(set(update_image_ids))
+
+        if image_set:
+            for image_data in image_set:
+                if image_data.get('id') is None:
+                    Image.objects.create(product=instance, **image_data)
+                else:
+                    image_instance = Image.objects.get(id=image_data['id'])
+                    image_instance.filename = image_data.get('filename', image_instance.filename)
+                    image_instance.save()
+
+        if len(deleted_image_ids) > 0:
+            Image.objects.filter(id__in=list(deleted_image_ids)).delete()
+
+        existing_variant_ids = instance.variants.values_list('id', flat=True)
+        update_variant_ids = [variant_data.get('id') for variant_data in variant_set if variant_data.get('id') is not None]
+        deleted_variant_ids = set(existing_variant_ids).difference(set(update_variant_ids))
+
+        if variant_set:
+            for variant_data in variant_set:
+                if variant_data.get('id') is None:
+                    Variant.objects.create(product=instance, **variant_data)
+                else:
+                    variant_instance = Variant.objects.get(id=variant_data['id'])
+                    variant_instance.name = variant_data.get('name', variant_instance.name)
+                    variant_instance.slug = slugify(variant_data.get('name', variant_instance.name))
+                    variant_instance.is_default = variant_data.get('is_default', variant_instance.is_default)
+                    variant_instance.stock = variant_data.get('stock', variant_instance.stock)
+                    variant_instance.save()
+
+        if len(deleted_variant_ids) > 0:
+            Variant.objects.filter(id__in=list(deleted_variant_ids)).delete()
+
+        return instance

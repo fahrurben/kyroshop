@@ -1,15 +1,14 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
-from ..models import Category
-from ..serializers import CategorySerializer
+from ..models import Product
+from ..serializers import ProductSerializer
 
-
-class CategoryView(viewsets.ModelViewSet):
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+class ProductView(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
-    ordering_fields = ['name', 'full_name']
+    ordering_fields = ['name']
     ordering = ['name']
 
     def get_serializer_context(self):
