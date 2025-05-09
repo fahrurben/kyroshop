@@ -13,6 +13,12 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { cn } from '../../lib/utils.js'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../ui/collapsible.js'
+import { SidebarMenuSub, SidebarMenuSubItem } from '../ui/sidebar.js'
 
 // Menu items.
 const items = [
@@ -21,26 +27,6 @@ const items = [
     url: '',
     icon: Home,
   },
-  {
-    title: 'Expense Category',
-    url: '/expense-category',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Income',
-    url: '/income',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Expense',
-    url: '/expense',
-    icon: LayoutGrid,
-  },
-  {
-    title: 'Logout',
-    url: '/logout',
-    icon: CirclePower,
-  },
 ]
 
 export function AppSidebar () {
@@ -48,7 +34,7 @@ export function AppSidebar () {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel><h1 className={cn("font-bold text-xl")}>Kakeibo</h1></SidebarGroupLabel>
+          <SidebarGroupLabel><h1 className={cn("font-bold text-xl")}>Kyroshop</h1></SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -61,6 +47,34 @@ export function AppSidebar () {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      <LayoutGrid/>
+                      <span>Products</span>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton>
+                          <Link to="/products">
+                            <span>Manage Products</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuButton>
+                          <Link to="/categories">
+                            <span>Categories</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

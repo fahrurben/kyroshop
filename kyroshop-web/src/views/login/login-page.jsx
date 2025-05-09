@@ -31,7 +31,7 @@ const formSchema = z.object({
 })
 
 function LoginPage () {
-  const { setToken } = authStore.actions
+  const { setToken, persistToken } = authStore.actions
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -46,6 +46,7 @@ function LoginPage () {
     onSuccess: async (data) => {
       let token = data.data.access
       setToken(token)
+      persistToken(token)
       toast('Login success')
       navigate('/')
     },

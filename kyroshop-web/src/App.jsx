@@ -8,6 +8,8 @@ import {
 import { SidebarProvider } from "@/components/ui/sidebar"
 import LoginPage from './views/login/login-page'
 import HomePage from './views/home/home-page.jsx'
+import MainLayout from './views/main-layout.jsx'
+import CategoryPage from './views/category/category-page.jsx'
 
 
 const queryClient = new QueryClient()
@@ -20,8 +22,12 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/" element={<HomePage />}/>
+            <Route element={<MainLayout />}>
+              <Route path="/categories" element={<CategoryPage />}/>
+              <Route path="/" element={<HomePage />}/>
+            </Route>
           </Routes>
+          <Toaster />
         </BrowserRouter>
       </SidebarProvider>
     </QueryClientProvider>
