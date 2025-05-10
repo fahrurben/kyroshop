@@ -16,7 +16,7 @@ function InputText ({
   return (
     <FormItem>
       {label !== ''
-        ? <FormLabel>{<label for={name}>{label}</label>}</FormLabel>
+        ? <FormLabel>{<label htmlFor={name}>{label}</label>}</FormLabel>
         : null}
       <FormControl>
         <Input type={type} placeholder={placeholder} {...field} />

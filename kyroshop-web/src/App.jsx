@@ -10,6 +10,7 @@ import LoginPage from './views/login/login-page'
 import HomePage from './views/home/home-page.jsx'
 import MainLayout from './views/main-layout.jsx'
 import CategoryPage from './views/category/category-page.jsx'
+import useAuth from './hooks/use-auth.js'
 
 
 const queryClient = new QueryClient()
