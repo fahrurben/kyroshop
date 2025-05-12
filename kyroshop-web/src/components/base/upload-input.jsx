@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { API_URL, mediaUrl } from '../../helpers/constant.js'
 import axios from 'axios'
+import { cn } from '../../helpers/cn.js'
 
 const UploadFormField = ({field, name, label, required = false}) => {
   const [file, setFile] = useState(null)
@@ -29,25 +30,27 @@ const UploadFormField = ({field, name, label, required = false}) => {
   }
 
   return (
-    <>
-      <img src={mediaUrl + field.value} alt="image" style={{width: '200px', height: '100px'}} />
-      <FormField
-        control={field.control}
-        name={name}
-        render={({ field }) => (
+    <FormField
+      control={field.control}
+      name={name}
+      render={({ field }) => (
+        <div className={cn("flex gap-4")}>
+          <img src={mediaUrl + field?.value} alt="image"
+               style={{ width: '200px', height: '100px' }}/>
           <FormItem>
             <FormLabel>
               {label}
               {required && <span className="text-red-500"> *</span>}
             </FormLabel>
             <FormControl>
-              <Input placeholder={label} type="file" onChange={(e) => handleFileChange(e, field)}/>
+              <Input placeholder={label} type="file"
+                     onChange={(e) => handleFileChange(e, field)}/>
             </FormControl>
-            <FormMessage />
+            <FormMessage/>
           </FormItem>
-        )}
-      />
-    </>
+        </div>
+      )}>
+    </FormField>
   )
 }
 

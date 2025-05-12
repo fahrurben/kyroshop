@@ -17,8 +17,12 @@ import ConfirmationDialog from '../../components/custom/confirmation-dialog.jsx'
 import { toast } from 'sonner'
 import { show_form_error_message } from '../../helpers/error_message.js'
 import CategoryModal from '../category/category-modal.jsx'
-import { useGetProduct } from '../../api-hooks/use-product.api.js'
+import {
+  useDeleteProduct,
+  useGetProduct,
+} from '../../api-hooks/use-product.api.js'
 import { useNavigate } from 'react-router'
+import { useDeleteCategory } from '../../api-hooks/use-category.api.js'
 
 function ProductList() {
 
@@ -60,12 +64,12 @@ function ProductList() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => {}}
+                onClick={() => navigate(`/products/edit/${id}`)}
               >
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {}}
+                onClick={() => showDeleteConfirmationModal(id, name)}
               >
                 Delete
               </DropdownMenuItem>
@@ -75,12 +79,37 @@ function ProductList() {
       },
     },
   ]
+  const queryClient = useQueryClient()
+
+  const [ deletedId, setDeletedId ] = useState(null)
 
   const navigate = useNavigate()
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [confirmMsg, setConfirmMsg] = useState("")
+
   const { data: { data: {results: products} = {} } = {} } = useGetProduct(true)
+
+  const deleteMutation = useDeleteProduct({
+    id: deletedId,
+    onSuccess: () => {
+      toast('Product deleted successfully')
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+    },
+    onError: (errors) => {
+    }
+  })
 
   const btnAddClicked = () => {
     navigate("/products/create")
+  }
+  const showDeleteConfirmationModal = (id, name) => {
+    setDeletedId(id)
+    setConfirmMsg(`Are you sure to delete "${name}" ?`)
+    setShowDeleteConfirmation(true)
+  }
+
+  const deleteCategory = () => {
+    deleteMutation.mutate()
   }
 
   return (
@@ -92,6 +121,7 @@ function ProductList() {
         </Button>
       </div>
       <DataTable columns={columns} data={products ?? []} />
+      <ConfirmationDialog show={showDeleteConfirmation} setShow={setShowDeleteConfirmation} message={confirmMsg} onConfirm={deleteCategory} />
     </>
   )
 }

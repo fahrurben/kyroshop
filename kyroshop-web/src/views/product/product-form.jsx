@@ -11,7 +11,6 @@ import InputText from '../../components/base/input-text.jsx'
 import CheckBoxInput from '../../components/base/check-box-input.jsx'
 import Combobox from '../../components/base/combo-box.jsx'
 import {
-  useCreateCategory,
   useGetCategory,
 } from '../../api-hooks/use-category.api.js'
 import { Textarea } from '../../components/ui/textarea.js'
@@ -25,15 +24,21 @@ import {
 import { toast } from 'sonner'
 import { show_form_error_message } from '../../helpers/error_message.js'
 import { useNavigate } from 'react-router'
-import { useCreateProduct } from '../../api-hooks/use-product.api.js'
+import {
+  useCreateProduct,
+  useUpdateProduct,
+} from '../../api-hooks/use-product.api.js'
 import UploadFormField from '../../components/base/upload-input.jsx'
+import { useEffect } from 'react'
 
 const variantSchema = z.object({
+  id: z.coerce.number().optional(),
   name: z.string().max(255),
   stock: z.coerce.number(),
 })
 
 const imageSchema = z.object({
+  id: z.coerce.number().optional(),
   filename: z.string(),
 })
 
@@ -46,7 +51,7 @@ const formSchema = z.object({
   images: z.array(imageSchema),
 })
 
-function ProductForm({initialData = {}}) {
+function ProductForm({id=null, initialData = {}}) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
@@ -55,21 +60,34 @@ function ProductForm({initialData = {}}) {
     defaultValues: {...initialData}
   })
 
+  useEffect(() => {
+    form.reset({ ...initialData })
+  }, [initialData])
+
   const { data: {data: {results: categories} = {} } = {} } = useGetCategory(true)
 
   const categoryOptions = categories ? categories.map((category) => ({label: category.name, value: category.id.toString()})) : []
   const { fields: variantFields, append: appendVariant, remove: removeVariant } = useFieldArray({ control: form.control, name: "variants" });
   const { fields: imageFields, append: appendImage, remove: removeImage } = useFieldArray({ control: form.control, name: "images" });
 
-  const createMutation = useCreateProduct({
-    onSuccess: () => {
-      toast('Product save successfully')
-      navigate('/products')
-    },
-    onError: (errors) => {
-      show_form_error_message(form, errors)
-    }
-  })
+  const formMutation = id ? useUpdateProduct({
+      id: id,
+      onSuccess: () => {
+        toast('Product save successfully')
+        navigate('/products')
+      },
+      onError: (errors) => {
+        show_form_error_message(form, errors)
+      }
+    }) : useCreateProduct({
+      onSuccess: () => {
+        toast('Product save successfully')
+        navigate('/products')
+      },
+      onError: (errors) => {
+        show_form_error_message(form, errors)
+      }
+    })
 
   const addVariant = () => {
     appendVariant({
@@ -87,7 +105,8 @@ function ProductForm({initialData = {}}) {
   }
 
   const onSubmit = (data) => {
-    createMutation.mutate(data)
+    console.log(data)
+    formMutation.mutate(data)
   }
 
   return (
@@ -139,9 +158,16 @@ function ProductForm({initialData = {}}) {
           <CardContent>
             {imageFields.map((field, index) => (
               <div key={field.id} className="flex gap-4 my-4 py-2">
+                <FormField
+                  control={form.control}
+                  name={`images.${index}.id`}
+                  render={({ field }) => (
+                    <InputText type="hidden" {...field} />
+                  )}
+                />
                 <UploadFormField field={field} name={`images.${index}.filename`} label="Image"
                                  required={true} />
-                <Button type="button" onClick={() => removeVariant(index)}><TrashIcon
+                <Button type="button" onClick={() => removeImage(index)}><TrashIcon
                   size={12}/></Button>
               </div>
             ))}
@@ -158,6 +184,13 @@ function ProductForm({initialData = {}}) {
           <CardContent>
             {variantFields.map((field, index) => (
               <div key={field.id} className="flex gap-4 my-4 py-2">
+                <FormField
+                  control={form.control}
+                  name={`variants.${index}.id`}
+                  render={({ field }) => (
+                    <input type="hidden" {...field} />
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name={`variants.${index}.name`}
@@ -180,7 +213,7 @@ function ProductForm({initialData = {}}) {
         </Card>
 
         <div className={'flex justify-end gap-2'}>
-          <Button type="submit">
+          <Button type="submit" onClick={onSubmit}>
             Submit
           </Button>
         </div>

@@ -16,7 +16,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class VariantSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     product = serializers.PrimaryKeyRelatedField(read_only=True)
-    is_default = serializers.BooleanField(required=False)
+    is_default = serializers.BooleanField(required=False, allow_null=True)
     slug = serializers.CharField(read_only=True)
 
     class Meta:
@@ -99,10 +99,13 @@ class ProductSerializer(serializers.ModelSerializer):
         update_variant_ids = [variant_data.get('id') for variant_data in variant_set if variant_data.get('id') is not None]
         deleted_variant_ids = set(existing_variant_ids).difference(set(update_variant_ids))
 
+        is_first_new_item = True
         if variant_set:
             for variant_data in variant_set:
                 if variant_data.get('id') is None:
+                    variant_data['is_default'] = True if len(existing_variant_ids) == 0 and is_first_new_item else False
                     Variant.objects.create(product=instance, **variant_data)
+                    is_first_new_item = False
                 else:
                     variant_instance = Variant.objects.get(id=variant_data['id'])
                     variant_instance.name = variant_data.get('name', variant_instance.name)
