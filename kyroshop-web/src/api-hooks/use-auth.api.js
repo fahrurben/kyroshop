@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { API_URL } from '../helpers/constant.js'
 
@@ -17,5 +17,5 @@ const useLogin = ({onError, onSuccess}) => {
 }
 
 export {
-  useLogin
+  useLogin,
 }

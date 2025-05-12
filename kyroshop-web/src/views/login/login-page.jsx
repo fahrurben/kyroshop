@@ -31,7 +31,7 @@ const formSchema = z.object({
 })
 
 function LoginPage () {
-  const { setToken, persistToken } = authStore.actions
+  const { setToken, persistToken, setUser } = authStore.actions
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -47,6 +47,8 @@ function LoginPage () {
       let token = data.data.access
       setToken(token)
       persistToken(token)
+      let { data: user }= await axios.get(`${API_URL}/profile`)
+      setUser(user)
       toast('Login success')
       navigate('/')
     },

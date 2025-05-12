@@ -11,6 +11,8 @@ import HomePage from './views/home/home-page.jsx'
 import MainLayout from './views/main-layout.jsx'
 import CategoryPage from './views/category/category-page.jsx'
 import useAuth from './hooks/use-auth.js'
+import ProductList from './views/product/product-list.jsx'
+import ProductCreate from './views/product/product-create.jsx'
 
 
 const queryClient = new QueryClient()
@@ -25,6 +27,8 @@ function App() {
             <Route path="/login" element={<LoginPage/>}/>
             <Route element={<MainLayout />}>
               <Route path="/categories" element={<CategoryPage />}/>
+              <Route path="/products/create" element={<ProductCreate />}/>
+              <Route path="/products" element={<ProductList />}/>
               <Route path="/" element={<HomePage />}/>
             </Route>
           </Routes>

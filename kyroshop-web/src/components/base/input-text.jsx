@@ -11,10 +11,11 @@ function InputText ({
   field,
   label = '',
   placeholder = '',
+  className= '',
   type = 'text',
 }) {
   return (
-    <FormItem>
+    <FormItem className={className}>
       {label !== ''
         ? <FormLabel>{<label htmlFor={name}>{label}</label>}</FormLabel>
         : null}

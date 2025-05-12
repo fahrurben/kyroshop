@@ -5,7 +5,7 @@ from ..models import CustomUser, Address
 class ProfileSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
-    password = serializers.CharField(required=False)
+    password = serializers.CharField(required=False, write_only=True)
     birthday = serializers.DateField()
     fullname = serializers.CharField(max_length=255)
     phone_number = serializers.CharField(max_length=12)

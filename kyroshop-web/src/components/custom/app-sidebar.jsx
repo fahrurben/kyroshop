@@ -1,4 +1,10 @@
-import { Home, Settings, LayoutGrid, CirclePower } from 'lucide-react'
+import {
+  Home,
+  Settings,
+  LayoutGrid,
+  CirclePower,
+  ChevronUp,
+} from 'lucide-react'
 
 import { Link } from 'react-router'
 
@@ -18,7 +24,19 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../ui/collapsible.js'
-import { SidebarMenuSub, SidebarMenuSubItem } from '../ui/sidebar.js'
+import {
+  SidebarFooter,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+} from '../ui/sidebar.js'
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@radix-ui/react-dropdown-menu'
+import { useSnapshot } from 'valtio/react'
+import { useNavigate } from 'react-router'
+
+import authStore from '../../stores/auth-store.js'
 
 // Menu items.
 const items = [
@@ -30,6 +48,16 @@ const items = [
 ]
 
 export function AppSidebar () {
+  const navigate = useNavigate()
+
+  const { user } = useSnapshot(authStore.state)
+  const { clearToken } = authStore.actions
+
+  const signOut = () => {
+    clearToken()
+    navigate('/login')
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -79,6 +107,28 @@ export function AppSidebar () {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  {`${user?.first_name} ${user?.last_name}`}
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   )
 }

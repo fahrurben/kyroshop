@@ -21,8 +21,10 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf.urls.static import static
 
-from kyroshop.views import RegisterView, CategoryView, ProfileView, ProductView
+from kyroshop.views import RegisterView, CategoryView, ProfileView, ProductView, ImageUploadView
+from django.conf import settings
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'categories', CategoryView)
@@ -34,6 +36,10 @@ urlpatterns = [
     path('api/profile', ProfileView.as_view(), name='profile'),
     path('api/token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/media_upload/', ImageUploadView.as_view(), name='media_upload'),
 
     path('api/', include(router.urls)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
