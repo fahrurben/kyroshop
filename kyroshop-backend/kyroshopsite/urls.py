@@ -23,12 +23,20 @@ from rest_framework_simplejwt.views import (
 )
 from django.conf.urls.static import static
 
-from kyroshop.views import RegisterView, CategoryView, ProfileView, ProductView, ImageUploadView
+from kyroshop.views import (
+    RegisterView,
+    CategoryView,
+    ProfileView,
+    ProductView,
+    ImageUploadView,
+    CustomerView,
+)
 from django.conf import settings
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'categories', CategoryView)
 router.register(r'products', ProductView)
+router.register(r'customers', CustomerView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,6 +48,7 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

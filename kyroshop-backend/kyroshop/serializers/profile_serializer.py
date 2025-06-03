@@ -27,6 +27,7 @@ class ProfileSerializer(serializers.Serializer):
         current_address = Address.objects.filter(user=current_user).first()
         if current_address is None:
             current_address = Address()
+            current_address.user = current_user
 
         current_address.fullname = validated_data.get('fullname', current_address.fullname)
         current_address.phone_number = validated_data.get('phone_number', current_address.phone_number)
