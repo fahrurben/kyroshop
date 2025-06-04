@@ -19,6 +19,9 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
     @staticmethod
     def create(username, email, password, **kwargs):
         user = CustomUser.objects.create_user(username, email, password, **kwargs)

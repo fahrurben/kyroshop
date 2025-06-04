@@ -4,6 +4,7 @@ import {
   LayoutGrid,
   CirclePower,
   ChevronUp,
+  Users,
 } from 'lucide-react'
 
 import { Link } from 'react-router'
@@ -101,6 +102,14 @@ export function AppSidebar () {
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>
                   </CollapsibleContent>
+                </SidebarMenuItem>
+                <SidebarMenuItem key="customers">
+                  <SidebarMenuButton asChild>
+                    <Link to="/customers">
+                      <Users/>
+                      <span>{"Customers"}</span>
+                    </Link>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
               </Collapsible>
             </SidebarMenu>
