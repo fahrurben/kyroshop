@@ -14,6 +14,7 @@ import useAuth from './hooks/use-auth.js'
 import ProductList from './views/product/product-list.jsx'
 import ProductCreate from './views/product/product-create.jsx'
 import ProductEdit from './views/product/product-edit.jsx'
+import CustomerPage from './views/customer/customer-page.jsx'
 
 
 const queryClient = new QueryClient()
@@ -31,6 +32,7 @@ function App() {
               <Route path="/products/create" element={<ProductCreate />}/>
               <Route path="/products/edit/:id" element={<ProductEdit />}/>
               <Route path="/products" element={<ProductList />}/>
+              <Route path="/customers" element={<CustomerPage />}/>
               <Route path="/" element={<HomePage />}/>
             </Route>
           </Routes>
