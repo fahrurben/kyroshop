@@ -29,6 +29,14 @@ function CustomerModal({customer, open, setOpen}) {
                 <span>{customer?.birthday}</span>
               </p>
               <p className="flex my-2">
+                <span className="block w-40">Province</span>
+                <span>{customer?.address?.province_display}</span>
+              </p>
+              <p className="flex my-2">
+                <span className="block w-40">City/Regency</span>
+                <span>{customer?.address?.city_display}</span>
+              </p>
+              <p className="flex my-2">
                 <span className="block w-40">Address</span>
                 <span>{customer?.address?.address}</span>
               </p>
