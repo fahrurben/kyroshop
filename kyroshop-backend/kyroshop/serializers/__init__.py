@@ -5,3 +5,4 @@ from .profile_serializer import ProfileSerializer
 from .address_serializer import AddressSerializer
 from .product_serializer import ProductSerializer
 from .customer_serializer import CustomerSerializer
+from .order_serializer import OrderSerializer

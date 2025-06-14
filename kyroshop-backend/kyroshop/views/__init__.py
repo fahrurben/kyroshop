@@ -4,3 +4,4 @@ from .profile_view import ProfileView
 from .product_view import ProductView
 from .image_view import ImageUploadView
 from .customer_view import CustomerView
+from .order_view import OrderView

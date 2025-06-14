@@ -7,3 +7,5 @@ from .variant import Variant
 from .upload_image_model import UploadImageModel
 from .province import Province
 from .city import City
+from .order import Order
+from .order_line import OrderLine
