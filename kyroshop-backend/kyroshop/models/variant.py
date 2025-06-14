@@ -15,3 +15,6 @@ class Variant(models.Model):
 
     def __str__(self):
         return self.slug
+
+    def product_display(self):
+        return self.product.name

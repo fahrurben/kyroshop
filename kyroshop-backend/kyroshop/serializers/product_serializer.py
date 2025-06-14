@@ -21,7 +21,7 @@ class VariantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Variant
-        fields = '__all__'
+        fields = ('id', 'name', 'slug', 'is_default', 'stock', 'product', 'product_display')
 
 
 class ProductSerializer(serializers.ModelSerializer):

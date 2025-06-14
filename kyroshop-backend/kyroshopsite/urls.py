@@ -31,6 +31,7 @@ from kyroshop.views import (
     ImageUploadView,
     CustomerView,
     OrderView,
+    OrdersView,
 )
 from django.conf import settings
 
@@ -38,6 +39,7 @@ router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'categories', CategoryView)
 router.register(r'products', ProductView)
 router.register(r'customers', CustomerView)
+router.register(r'orders', OrdersView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

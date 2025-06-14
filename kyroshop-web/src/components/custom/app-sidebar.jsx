@@ -5,6 +5,7 @@ import {
   CirclePower,
   ChevronUp,
   Users,
+  ShoppingCart,
 } from 'lucide-react'
 
 import { Link } from 'react-router'
@@ -111,6 +112,14 @@ export function AppSidebar () {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                <SidebarMenuItem key="customers">
+                <SidebarMenuButton asChild>
+                  <Link to="/orders">
+                    <ShoppingCart/>
+                    <span>{"Orders"}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>

@@ -15,6 +15,7 @@ import ProductList from './views/product/product-list.jsx'
 import ProductCreate from './views/product/product-create.jsx'
 import ProductEdit from './views/product/product-edit.jsx'
 import CustomerPage from './views/customer/customer-page.jsx'
+import OrderPage from './views/orders/order-page.jsx'
 
 
 const queryClient = new QueryClient()
@@ -33,6 +34,7 @@ function App() {
               <Route path="/products/edit/:id" element={<ProductEdit />}/>
               <Route path="/products" element={<ProductList />}/>
               <Route path="/customers" element={<CustomerPage />}/>
+              <Route path="/orders" element={<OrderPage />}/>
               <Route path="/" element={<HomePage />}/>
             </Route>
           </Routes>
