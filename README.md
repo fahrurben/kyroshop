@@ -28,7 +28,7 @@ python manage.py runserver
 ### 🔹 **Step 3: Install Frontend**
 ```sh
 cd kyroshop-frontend
-npm run install
+npm install
 npm run dev
 ```
 
