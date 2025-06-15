@@ -16,12 +16,10 @@ def apply_migration(apps, schema_migration):
 
     for data in provinces_data:
         province = Province.objects.get_or_create(id=str(data['id']), name=data['province'])
-        print(province)
 
     for data in regencies_data:
         province = Province.objects.get(id=str(data['province_id']))
         city = City.objects.get_or_create(id=str(data['id']), type=data['type'], name=data['regency'], province=province)
-        print(city)
 
 class Migration(migrations.Migration):
 
