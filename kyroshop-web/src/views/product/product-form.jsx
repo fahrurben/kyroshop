@@ -61,6 +61,7 @@ function ProductForm({id=null, initialData = {}}) {
   })
 
   useEffect(() => {
+    console.log(initialData)
     form.reset({ ...initialData })
   }, [initialData])
 
@@ -105,7 +106,22 @@ function ProductForm({id=null, initialData = {}}) {
   }
 
   const onSubmit = (data) => {
+    if (id === null) {
+      if (data.variants) {
+        data.variants = data.variants.map((item) => {
+          delete item.id
+          return item
+        })
+      }
+      if (data.images) {
+        data.images = data.images.map((item) => {
+          delete item.id
+          return item
+        })
+      }
+    }
     console.log(data)
+
     formMutation.mutate(data)
   }
 
@@ -162,7 +178,7 @@ function ProductForm({id=null, initialData = {}}) {
                   control={form.control}
                   name={`images.${index}.id`}
                   render={({ field }) => (
-                    <InputText type="hidden" {...field} />
+                    <input type="hidden" {...field} />
                   )}
                 />
                 <UploadFormField field={field} name={`images.${index}.filename`} label="Image"

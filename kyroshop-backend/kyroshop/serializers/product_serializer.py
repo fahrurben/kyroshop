@@ -85,10 +85,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
         if image_set:
             for image_data in image_set:
-                if image_data.get('id') is None:
+                image_id = image_data.pop('id')
+                if image_id is None or image_id == 0:
                     Image.objects.create(product=instance, **image_data)
                 else:
-                    image_instance = Image.objects.get(id=image_data['id'])
+                    image_instance = Image.objects.get(id=image_id)
                     image_instance.filename = image_data.get('filename', image_instance.filename)
                     image_instance.save()
 
@@ -102,12 +103,13 @@ class ProductSerializer(serializers.ModelSerializer):
         is_first_new_item = True
         if variant_set:
             for variant_data in variant_set:
-                if variant_data.get('id') is None:
+                variant_id = variant_data.pop('id')
+                if variant_id is None or variant_id == 0:
                     variant_data['is_default'] = True if len(existing_variant_ids) == 0 and is_first_new_item else False
                     Variant.objects.create(product=instance, **variant_data)
                     is_first_new_item = False
                 else:
-                    variant_instance = Variant.objects.get(id=variant_data['id'])
+                    variant_instance = Variant.objects.get(id=variant_id)
                     variant_instance.name = variant_data.get('name', variant_instance.name)
                     variant_instance.slug = slugify(variant_data.get('name', variant_instance.name))
                     variant_instance.is_default = variant_data.get('is_default', variant_instance.is_default)
