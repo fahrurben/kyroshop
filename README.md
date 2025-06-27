@@ -35,10 +35,10 @@ npm run dev
 ## 📷 Screenshots
 
 ### **Product Management**
-![image](https://github.com/user-attachments/assets/de787786-be30-4062-b082-f6fb4bd88ee8)
+![image](https://github.com/user-attachments/assets/2e58e40c-663f-4d5e-9e36-cf83984e6c89)
 
 ### **Product Create/Update**
-![screencapture-localhost-5173-products-edit-8-2025-06-15-18_03_05](https://github.com/user-attachments/assets/98c491bc-e043-4688-8c36-e2a0ad9cb6e3)
+![screencapture-localhost-5173-products-edit-13-2025-06-27-16_03_58](https://github.com/user-attachments/assets/c025a1eb-dfa2-420a-a0e0-c321bc11dc12)
 
 ### **Customer Dashboard**
 ![image](https://github.com/user-attachments/assets/c248b219-0302-4c13-8106-d8347c505c74)
