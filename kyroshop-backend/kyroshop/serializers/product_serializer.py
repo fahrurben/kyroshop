@@ -36,8 +36,25 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'slug', 'description', 'is_active', 'price', 'category_id', 'category', 'images',
-                  'variants', 'created_at', 'created_by', 'updated_at', 'updated_by')
+        fields = (
+            'id',
+            'name',
+            'slug',
+            'description',
+            'is_active',
+            'price',
+            'category_id',
+            'category',
+            'images',
+            'variants',
+            'seo_title',
+            'seo_description',
+            'seo_keywords',
+            'created_at',
+            'created_by',
+            'updated_at',
+            'updated_by'
+        )
 
     def create(self, validated_data):
         current_user = self.context['user']
@@ -76,6 +93,9 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.is_active = validated_data.get('is_active', instance.is_active)
         instance.price = validated_data.get('price', instance.price)
         instance.category = category
+        instance.seo_title = validated_data.get('seo_title', instance.seo_title)
+        instance.seo_description = validated_data.get('seo_description', instance.seo_description)
+        instance.seo_keywords = validated_data.get('seo_keywords', instance.seo_keywords)
         instance.updated_by = current_user
         instance.save()
 
@@ -97,7 +117,8 @@ class ProductSerializer(serializers.ModelSerializer):
             Image.objects.filter(id__in=list(deleted_image_ids)).delete()
 
         existing_variant_ids = instance.variants.values_list('id', flat=True)
-        update_variant_ids = [variant_data.get('id') for variant_data in variant_set if variant_data.get('id') is not None]
+        update_variant_ids = [variant_data.get('id') for variant_data in variant_set if
+                              variant_data.get('id') is not None]
         deleted_variant_ids = set(existing_variant_ids).difference(set(update_variant_ids))
 
         is_first_new_item = True
