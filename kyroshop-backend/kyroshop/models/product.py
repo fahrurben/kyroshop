@@ -9,6 +9,7 @@ class Product(models.Model):
     description = models.TextField(default='')
     is_active = models.BooleanField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
+    weight = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     category = models.ForeignKey(Category, related_name="products", on_delete=models.CASCADE)
 
     seo_title = models.CharField(max_length=255, null=True, blank=True)

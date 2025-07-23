@@ -43,6 +43,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'description',
             'is_active',
             'price',
+            'weight',
             'category_id',
             'category',
             'images',
@@ -92,6 +93,7 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.is_active = validated_data.get('is_active', instance.is_active)
         instance.price = validated_data.get('price', instance.price)
+        instance.weight = validated_data.get('weight', instance.weight)
         instance.category = category
         instance.seo_title = validated_data.get('seo_title', instance.seo_title)
         instance.seo_description = validated_data.get('seo_description', instance.seo_description)
