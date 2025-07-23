@@ -32,6 +32,7 @@ from kyroshop.views import (
     CustomerView,
     OrderView,
     OrdersView,
+    ProvinceView, CityView,
 )
 from django.conf import settings
 
@@ -49,6 +50,8 @@ urlpatterns = [
     path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/media_upload/', ImageUploadView.as_view(), name='media_upload'),
     path('api/order', OrderView.as_view(), name='order'),
+    path('api/province', ProvinceView.as_view({'get': 'list'}), name='province'),
+    path('api/city', CityView.as_view({'get': 'list'}), name='city'),
 
     path('api/', include(router.urls)),
 ]
