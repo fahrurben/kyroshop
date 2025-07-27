@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from kyroshop.models import CustomUser, Category, Product, UploadImageModel
+from .models import CustomUser
+from .models.category import Category
+from .models.product import Product
+from .models.upload_image_model import UploadImageModel
 
 admin.site.register(CustomUser)
 admin.site.register(Category)

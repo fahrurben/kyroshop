@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from kyroshop.models import City
+from kyroshop.models.city import City
 from kyroshop.serializers.city_serializer import CitySerializer
 
 

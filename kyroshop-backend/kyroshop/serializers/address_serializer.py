@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Address
+from ..models.address import Address
 from django.utils.text import slugify
 from django.db.models import Q, query
 

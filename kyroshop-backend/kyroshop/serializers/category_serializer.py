@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Category
+from ..models.category import Category
 from django.utils.text import slugify
 from django.db.models import Q, query
 

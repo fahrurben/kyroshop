@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 
-from ..models import Order
+from ..models.order import Order
 from ..serializers.order_serializer import OrderSerializer
 
 class OrdersView(CreateModelMixin,

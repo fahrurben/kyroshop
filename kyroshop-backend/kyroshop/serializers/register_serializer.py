@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import CustomUser
+from ..models.custom_user import CustomUser
 
 
 class RegisterSerializer(serializers.Serializer):

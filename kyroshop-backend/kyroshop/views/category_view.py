@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
-from ..models import Category
+from ..models.category import Category
 from ..serializers import CategorySerializer
 
 

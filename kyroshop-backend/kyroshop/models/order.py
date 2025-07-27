@@ -1,8 +1,12 @@
 from django.db import models
 
 from .custom_user import CustomUser
+from .order_manager import OrderManager
+
 
 class Order(models.Model):
+    objects = models.Manager()
+    custom_manager = OrderManager()
     customer = models.ForeignKey(CustomUser, related_name="orders", on_delete=models.CASCADE)
 
     class ShippingMethod(models.TextChoices):

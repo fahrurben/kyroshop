@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from ..models import CustomUser, Address
+from ..models.custom_user import CustomUser
+from ..models.address import Address
 
 
 class ProfileSerializer(serializers.Serializer):

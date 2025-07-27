@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from ..models import UploadImageModel
+from ..models.upload_image_model import UploadImageModel
 from ..serializers.upload_image_serializer import UploadImageSerializer
 
 

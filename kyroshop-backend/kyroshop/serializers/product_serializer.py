@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from ..models import Product, Image, Variant, Category
+from ..models.product import Product
+from ..models.image import Image
+from ..models.variant import Variant
+from ..models.category import Category
 from .category_serializer import CategorySerializer
 from django.utils.text import slugify
 

@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from kyroshop.models import Province
+from kyroshop.models.province import Province
 from kyroshop.serializers.province_serializer import ProvinceSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 

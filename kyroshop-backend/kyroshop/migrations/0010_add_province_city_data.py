@@ -5,7 +5,8 @@ import os
 import json
 from django.conf import settings
 
-from kyroshop.models import Province, City
+from kyroshop.models.province import Province
+from kyroshop.models.city import City
 
 def apply_migration(apps, schema_migration):
     provinces_file = open(os.path.join(settings.BASE_DIR, 'kyroshop/data/provinces.json'))

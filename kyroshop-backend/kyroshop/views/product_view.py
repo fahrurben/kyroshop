@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 
-from ..models import Product
+from ..models.product import Product
 from ..serializers import ProductSerializer
 
 class ProductView(viewsets.ModelViewSet):
