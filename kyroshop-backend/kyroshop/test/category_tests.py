@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 import datetime
-from ..models import Category
+from ..models.category import Category
 from ..models import CustomUser
 from rest_framework_simplejwt.tokens import AccessToken
 class CategoryTests(APITestCase):

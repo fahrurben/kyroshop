@@ -29,7 +29,7 @@ class OrdersView(CreateModelMixin,
         context['user'] = self.request.user
         return context
 
-    @action(detail=False,methods=['post'])
+    @action(detail=False,methods=['post'],url_name='save')
     def save(self, request, *args, **kwargs):
         serializer = OrderSerializer(
             data=request.data,
@@ -38,7 +38,7 @@ class OrdersView(CreateModelMixin,
         if serializer.is_valid():
             order = serializer.create(serializer.validated_data)
             order_serializer = OrderSerializer(instance=order)
-            return Response(order_serializer.data, status=status.HTTP_200_OK)
+            return Response(order_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

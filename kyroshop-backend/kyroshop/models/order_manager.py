@@ -19,6 +19,7 @@ class OrderManager(models.Manager):
             sub_total=0,
             shipping_cost=0,
             total=total,
+            status=status,
             **validated_data
         )
 
