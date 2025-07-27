@@ -10,6 +10,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from ..models.order import Order
 from ..serializers.order_serializer import OrderSerializer
+from ..permissions.own_order_permission import OwnOrderPermission
 
 class OrdersView(CreateModelMixin,
                  ListModelMixin,
@@ -20,7 +21,7 @@ class OrdersView(CreateModelMixin,
                  ):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, OwnOrderPermission]
     ordering_fields = ['id']
     ordering = ['id']
 
@@ -29,11 +30,11 @@ class OrdersView(CreateModelMixin,
         context['user'] = self.request.user
         return context
 
-    @action(detail=False,methods=['post'],url_name='save')
-    def save(self, request, *args, **kwargs):
+    @action(detail=False,methods=['post'],url_name='checkout')
+    def checkout(self, request, *args, **kwargs):
         serializer = OrderSerializer(
             data=request.data,
-            context={'user': self.request.user, 'status': Order.OrderStatus.SAVED}
+            context={'user': self.request.user, 'status': Order.OrderStatus.CHECK_OUT}
         )
         if serializer.is_valid():
             order = serializer.create(serializer.validated_data)

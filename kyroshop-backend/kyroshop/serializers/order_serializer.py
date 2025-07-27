@@ -52,6 +52,6 @@ class OrderSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         current_user = self.context['user']
 
-        order = Order.custom_manager.update_order(validated_data, instance, current_user)
+        order = Order.custom_manager.update_order(instance, validated_data, current_user)
         return order
 

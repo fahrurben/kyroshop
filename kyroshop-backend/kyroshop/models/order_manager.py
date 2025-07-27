@@ -38,7 +38,6 @@ class OrderManager(models.Manager):
         order.sub_total = sub_total
         order.shipping_cost = shipping_cost
         order.total = sub_total + shipping_cost
-        order.status = status
         order.save()
         return order
 
@@ -49,15 +48,15 @@ class OrderManager(models.Manager):
         sub_total = 0
 
         total = 0
-        order_lines_set = validated_data.pop('orderline_set') if 'orderline_set' in validated_data else None
+        order_lines_set = validated_data.pop('orderline_set') if 'orderline_set' in validated_data else []
 
-        existing_order_ids = instance.orderline_set.value_list('id', flat=True)
+        existing_order_ids = instance.orderline_set.all().values_list('id',flat=True)
         update_order_ids = [order_line.get('id') for order_line in order_lines_set if order_line.get('id') is not None]
         deleted_order_ids = set(existing_order_ids).difference(set(update_order_ids))
 
         if order_lines_set:
             for order_line in order_lines_set:
-                order_id = order_line.pop('id')
+                order_id = order_line.get('id')
                 if order_id is None or order_id == 0:
                     line = OrderLineModel(order=instance, price=0, subtotal=0, **order_line)
                     line.calculate_sub_total()
