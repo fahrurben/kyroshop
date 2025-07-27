@@ -19,6 +19,7 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     class OrderStatus(models.TextChoices):
+        SAVED = 'SAVED', 'Saved'
         CHECK_OUT = 'CHECK_OUT', 'Check Out'
         CREATED = 'CREATED', 'Created'
         PAID = 'PAID', 'Paid'

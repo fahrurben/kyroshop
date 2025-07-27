@@ -30,7 +30,6 @@ from kyroshop.views import (
     ProductView,
     ImageUploadView,
     CustomerView,
-    OrderView,
     OrdersView,
     ProvinceView, CityView,
 )
