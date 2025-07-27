@@ -1,7 +1,8 @@
 from ..models import CustomUser
 
 ALLOWED_PATH  = [
-    '/api/orders/checkout'
+    '/api/orders/checkout',
+    '/api/orders/update-method'
 ]
 
 class OwnOrderPermission:
@@ -16,8 +17,9 @@ class OwnOrderPermission:
         if request.user.role == CustomUser.Roles.ADMIN:
             return True
 
-        print(request.path)
-        if request.user.id == obj.customer.id and request.path in ALLOWED_PATH:
-            return True
+        if request.user.id == obj.customer.id:
+            for allowed_path in ALLOWED_PATH:
+                if request.path.startswith(allowed_path):
+                    return True
 
         return False

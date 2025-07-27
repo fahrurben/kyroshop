@@ -97,3 +97,16 @@ class OrderTests(APITestCase):
         # self.assertEqual(order_line.price, 1000)
         # self.assertEqual(order_line.qty, 2)
         # self.assertEqual(order_line.subtotal, 2000)
+
+    def test_update_method(self):
+        url = reverse('order-update-method', args=[self.order.id])
+        data = {
+            'shipping_method': Order.ShippingMethod.JNT,
+            'payment_method': Order.PaymentMethod.BANK_TRANSFER,
+        }
+        response = self.client.patch(url, data, format='json')
+        latest_order = Order.objects.last()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(latest_order.customer, self.user)
+        self.assertEqual(latest_order.shipping_method, Order.ShippingMethod.JNT)
+        self.assertEqual(latest_order.payment_method, Order.PaymentMethod.BANK_TRANSFER)

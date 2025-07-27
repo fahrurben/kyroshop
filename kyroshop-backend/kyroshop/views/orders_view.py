@@ -43,3 +43,19 @@ class OrdersView(CreateModelMixin,
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True,methods=['patch'],url_name='update-method')
+    def update_method(self, request, pk):
+        instance = Order.objects.get(pk=pk)
+        serializer = OrderSerializer(
+            partial=True,
+            data=request.data,
+            context={'user': self.request.user}
+        )
+        if serializer.is_valid():
+            order = Order.custom_manager.update_order_method(instance, serializer.validated_data)
+            order_serializer = OrderSerializer(instance=order)
+            return Response(order_serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
