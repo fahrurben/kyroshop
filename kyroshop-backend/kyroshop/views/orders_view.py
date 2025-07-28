@@ -45,7 +45,7 @@ class OrdersView(CreateModelMixin,
 
     @action(detail=True,methods=['patch'],url_name='update-method')
     def update_method(self, request, pk):
-        instance = Order.objects.get(pk=pk)
+        instance = self.get_object()
         serializer = OrderSerializer(
             partial=True,
             data=request.data,
@@ -58,4 +58,26 @@ class OrdersView(CreateModelMixin,
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['patch'], url_name='submit-order')
+    def submit_order(self, request, pk):
+        instance = self.get_object()
+        serializer = OrderSerializer(
+            partial=True,
+            data=request.data,
+            context={'user': self.request.user}
+        )
+        if serializer.is_valid():
+            order = Order.custom_manager.submit_order(instance, serializer.validated_data)
+            order_serializer = OrderSerializer(instance=order)
+            return Response(order_serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['delete'], url_name='cancel')
+    def cancel(self, request, pk):
+        instance = self.get_object()
+        try:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

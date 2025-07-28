@@ -92,3 +92,14 @@ class OrderManager(models.Manager):
         instance.save()
 
         return instance
+
+    def submit_order(self, instance, validated_data):
+        instance.shipping_method = validated_data.get('shipping_method', instance.shipping_method)
+        instance.payment_method = validated_data.get('payment_method', instance.payment_method)
+        shipping_cost = ShippingCost.get_shipping_cost(instance, instance.customer.address)
+        instance.shipping_cost = shipping_cost
+        instance.total = instance.sub_total + shipping_cost
+        instance.status = self.model.OrderStatus.CREATED
+        instance.save()
+
+        return instance

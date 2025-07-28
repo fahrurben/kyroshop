@@ -10,7 +10,6 @@ from ..models.category import Category
 from ..models.product import Product
 from ..models.variant import Variant
 from ..models.order import Order
-from ..models.order_line import OrderLine
 from ..models.address import Address
 
 class OrderTests(APITestCase):
@@ -110,3 +109,22 @@ class OrderTests(APITestCase):
         self.assertEqual(latest_order.customer, self.user)
         self.assertEqual(latest_order.shipping_method, Order.ShippingMethod.JNT)
         self.assertEqual(latest_order.payment_method, Order.PaymentMethod.BANK_TRANSFER)
+
+    def test_submit_order(self):
+        url = reverse('order-submit-order', args=[self.order.id])
+        data = {
+            'shipping_method': Order.ShippingMethod.JNT,
+            'payment_method': Order.PaymentMethod.BANK_TRANSFER,
+        }
+        response = self.client.patch(url, data, format='json')
+        latest_order = Order.objects.last()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(latest_order.customer, self.user)
+        self.assertEqual(latest_order.shipping_method, Order.ShippingMethod.JNT)
+        self.assertEqual(latest_order.payment_method, Order.PaymentMethod.BANK_TRANSFER)
+        self.assertEqual(latest_order.status, Order.OrderStatus.CREATED)
+
+    def test_cancel_order(self):
+        url = reverse('order-cancel', args=[self.order.id])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
