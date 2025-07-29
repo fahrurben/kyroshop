@@ -30,6 +30,7 @@ class OrderManager(models.Manager):
             for order_line_datum in order_lines_set:
                 line = OrderLineModel(order=order, price=0, subtotal=0, **order_line_datum)
                 line.calculate_sub_total()
+                line.calculate_total_weight()
                 line.save()
                 sub_total += line.subtotal
 
@@ -61,11 +62,13 @@ class OrderManager(models.Manager):
                     line = OrderLineModel(order=instance, price=0, subtotal=0, **order_line)
                     line.calculate_sub_total()
                     line.save()
+                    line.calculate_total_weight()
                     sub_total += line.subtotal
                 else:
                     OrderLineModel.objects.get(id=order_id).update(**order_line)
                     line = OrderLineModel.objects.get(id=order_id)
                     line.calculate_sub_total()
+                    line.calculate_total_weight()
                     line.save()
                     sub_total += line.subtotal
 

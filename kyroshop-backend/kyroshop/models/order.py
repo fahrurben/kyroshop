@@ -31,7 +31,7 @@ class Order(models.Model):
         RECEIVED = 'RECEIVED', 'Received'
         RETURNED = 'RETURNED', 'Returned'
         DONE = 'DONE', 'Done'
-    status = models.CharField(max_length=10, choices=OrderStatus, default=OrderStatus.CREATED)
+    status = models.CharField(max_length=10, choices=OrderStatus, default=OrderStatus.SAVED)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
