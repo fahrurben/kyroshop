@@ -19,6 +19,9 @@ class OwnOrderPermission(permissions.BasePermission):
         if request.user.role == CustomUser.Roles.ADMIN:
             return True
 
+        if request.get_full_path() == reverse('order-detail', args=[obj.id]) and request.method == 'GET':
+            return True
+
         if request.user.id == obj.customer.id:
             for allowed_view in ALLOWED_VIEW:
                 if request.get_full_path() == reverse(allowed_view, args=[obj.id]):

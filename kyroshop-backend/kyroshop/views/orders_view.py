@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.viewsets import GenericViewSet
 
+from ..models import CustomUser
 from ..models.order import Order
 from ..serializers.order_serializer import OrderSerializer
 from ..permissions.own_order_permission import OwnOrderPermission
@@ -29,6 +30,13 @@ class OrdersView(CreateModelMixin,
         context = super().get_serializer_context()
         context['user'] = self.request.user
         return context
+
+    def get_queryset(self):
+        user = self.request.user
+        query = Order.objects.all()
+        if user.role == CustomUser.Roles.CUSTOMER:
+            return query.filter(customer=user)
+        return query
 
     @action(detail=False,methods=['post'],url_name='checkout')
     def checkout(self, request, *args, **kwargs):

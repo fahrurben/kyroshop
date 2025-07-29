@@ -97,6 +97,13 @@ class OrderTests(APITestCase):
         # self.assertEqual(order_line.qty, 2)
         # self.assertEqual(order_line.subtotal, 2000)
 
+    def test_get(self):
+        url = reverse('order-detail', args=[self.order.id])
+        response = self.client.get(url)
+        latest_order = Order.objects.last()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(latest_order.id, response.data['id'])
+
     def test_update_method(self):
         url = reverse('order-update-method', args=[self.order.id])
         data = {
