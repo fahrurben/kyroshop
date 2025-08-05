@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router";
 import routeConfig from "./route.config.jsx"
 import { createTheme, ThemeProvider } from '@mui/material'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const theme = createTheme({
   components: {
@@ -16,11 +17,15 @@ const theme = createTheme({
   }
 })
 
+const queryClient = new QueryClient()
+
 const ContainerApp = function () {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={routeConfig} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={routeConfig} />
+        </QueryClientProvider>
       </ThemeProvider>
     </>
   )
