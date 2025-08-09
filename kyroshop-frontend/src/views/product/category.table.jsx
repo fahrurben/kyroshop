@@ -14,7 +14,7 @@ function CategoryTable ({ data = null }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -38,7 +38,10 @@ function CategoryTable ({ data = null }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((row) => (
+          {(rowsPerPage > 0
+              ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : data
+          ).map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

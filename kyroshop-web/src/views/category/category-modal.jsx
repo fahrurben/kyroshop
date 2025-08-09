@@ -128,7 +128,7 @@ function CategoryModal({categories = [], initialData = {}, open, setOpen}) {
                     <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
                       Cancel
                     </Button>
-                    <Button type="submit" onClick={() => form.handleSubmit(onSubmit)}>
+                    <Button type="submit">
                       Submit
                     </Button>
                   </div>

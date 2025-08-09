@@ -7,7 +7,6 @@ function CategoryNav() {
   let location = useLocation()
   let navigate = useNavigate()
 
-  console.log(location)
   let activeNav = 0
   switch (location.pathname) {
     case "/categories":

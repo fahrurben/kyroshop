@@ -8,7 +8,6 @@ class CategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     full_name = serializers.CharField(read_only=True)
     slug = serializers.CharField(read_only=True)
-    parent_id = serializers.IntegerField(allow_null=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by = serializers.SlugRelatedField(read_only=True, slug_field='email')
     updated_by = serializers.SlugRelatedField(read_only=True, slug_field='email')
