@@ -2,15 +2,23 @@ import axios from 'axios'
 import { API_URL } from '../helpers/constant.js'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-export function useGetCategory(all=false) {
+export function useGetCategory(search = "", all=false) {
   return useQuery({
-    queryKey: ['categories'],
+    queryKey: ['categories', search],
     queryFn: async () => {
       let url = `${API_URL}/categories`
+
+      let params = {}
+
       if (all) {
-        url += '?limit=1000'
+        params["limit"] = 1000
       }
-      response = await axios.get(url)
+      if (search) {
+        params["search"] = search
+      }
+
+      const paramString = new URLSearchParams(params);
+      let response = await axios.get(url + '?' + paramString)
       return response.data
     }
   })

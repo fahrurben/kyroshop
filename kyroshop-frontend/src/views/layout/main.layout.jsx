@@ -18,9 +18,13 @@ import useAuth from '../../hooks/use-auth.js'
 import { Menu, MenuItem } from '@mui/material'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import { actions as authActions } from '../../stores/auth.store.js'
+import { Link } from "react-router"
 
 const drawerWidth = 240
-const navItems = ['Home', 'About', 'Contact']
+const navItems = [
+  {"label": "Home", "route": "/"},
+  {"label": "Products", "route": "/categories"},
+]
 
 function MainLayout(props) {
   useAuth()
@@ -76,9 +80,9 @@ function MainLayout(props) {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.label} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.label} onClick={() => navigate(item.route)} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -142,7 +146,7 @@ function MainLayout(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main" sx={{ p: 3, minWidth: '100%', minHeight: '100vh' }}>
         <Toolbar />
         <Outlet />
       </Box>
