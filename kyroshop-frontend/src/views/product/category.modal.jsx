@@ -14,13 +14,13 @@ import CheckBoxFieldElement
   from '../../components/form/checkboxfield.element.jsx'
 import {
   useGetCategory,
-  useCreateCategory,
+  useCreateCategory, useUpdateCategory,
 } from '../../hooks/use-category.api.js'
 import SelectBoxFieldElement
   from '../../components/form/selectboxfield.element.jsx'
 import Box from '@mui/material/Box'
 import { Snackbar } from '@mui/material'
-import { toast } from "mui-sonner"
+import { toast } from 'mui-sonner'
 import { useQueryClient } from '@tanstack/react-query'
 import { show_form_error_message } from '../../helpers/form.helpers.js'
 
@@ -30,37 +30,45 @@ const formSchema = z.object({
   parent_id: z.coerce.number().optional(),
 })
 
-function CategoryModal ({ open, setOpen, refreshPage, mode = 'create' }) {
+function CategoryModal ({
+  open,
+  setOpen,
+  refreshPage,
+  categoryOptions = [],
+  id = null,
+  initialData = null,
+}) {
   const queryClient = useQueryClient()
 
-  const { data: categoriesData, refetch } = useGetCategory('', true)
-  const categoryOptions = categoriesData?.results?.map(
-    (row) => ({ value: row.id, label: row.name }))
-
-  useEffect(() => {
-    if (open) {
-      refetch()
-    }
-  }, [open])
-
-  const { control, handleSubmit, setError } = useForm({
+  const { control, handleSubmit, reset, setError } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      'name': '',
-      'is_active': false,
-      'parent_id': null,
-    },
+    defaultValues: { ...initialData },
   })
 
   const createMutation = useCreateCategory({
     onSuccess: () => {
-      toast('Category created succesfully')
+      toast('Category created successfully')
       refreshPage()
     },
     onError: (errorResponse) => {
       show_form_error_message(errorResponse, setError)
     },
   })
+
+  const updateMutation = useUpdateCategory({
+    id: id,
+    onSuccess: () => {
+      toast('Category updated successfully')
+      refreshPage()
+    },
+    onError: (errorResponse) => {
+      show_form_error_message(errorResponse, setError)
+    }
+  })
+
+  useEffect(() => {
+    reset({ ...initialData })
+  }, [open, initialData])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -71,11 +79,12 @@ function CategoryModal ({ open, setOpen, refreshPage, mode = 'create' }) {
   }
 
   const onSubmit = (data) => {
-    if (data.parent_id === 0) {
-      delete data.parent_id
+    data.parent_id = Number.parseInt(data.parent_id)
+    if (id !== null) {
+      updateMutation.mutate(data)
+    } else {
+      createMutation.mutate(data)
     }
-
-    createMutation.mutate(data)
   }
 
   return (
@@ -102,7 +111,7 @@ function CategoryModal ({ open, setOpen, refreshPage, mode = 'create' }) {
         </form>
       </Dialog>
     </>
-)
+  )
 }
 
 export default CategoryModal

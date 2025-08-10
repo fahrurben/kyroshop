@@ -24,14 +24,33 @@ export function useGetCategory(search = "", all=false) {
   })
 }
 
+export function useGetCategoryAll(all=false) {
+  return useQuery({
+    queryKey: ['categories_all'],
+    queryFn: async () => {
+      let url = `${API_URL}/categories`
+
+      let params = {}
+
+      if (all) {
+        params["limit"] = 1000
+      }
+
+      const paramString = new URLSearchParams(params);
+      let response = await axios.get(url + '?' + paramString)
+      return response.data
+    }
+  })
+}
+
 export function useGetCategoryById(id) {
   return useQuery({
     queryKey: ['category', id],
-    queryFn: () => {
+    queryFn: async () => {
       let url = `${API_URL}/categories/${id}`
-      return axios.get(url)
+      let response = await axios.get(url)
+      return response.data
     },
-    enabled: false,
   })
 }
 
@@ -65,9 +84,9 @@ export function useUpdateCategory({ id = null, onSuccess, onError }) {
   })
 }
 
-export function useDeleteCategory({ id = null, onSuccess, onError }) {
+export function useDeleteCategory({onSuccess, onError }) {
   return useMutation({
-    mutationFn: (formData) => {
+    mutationFn: ({ id }) => {
       let url = `${API_URL}/categories/${id}`
       return axios.delete(url)
     },

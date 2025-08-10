@@ -7,10 +7,16 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { useState } from 'react'
 import { TableFooter, TablePagination } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import IconButton from '@mui/material/IconButton'
+import { useConfirm } from 'material-ui-confirm'
 
-function CategoryTable ({ data = null }) {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+function CategoryTable ({ data = null , showEditModal, deleteCategory}) {
+  const confirm = useConfirm()
+
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -25,6 +31,19 @@ function CategoryTable ({ data = null }) {
     setPage(0);
   };
 
+  const handleEdit = (id) => {
+    showEditModal(id)
+  }
+
+  const handleDelete = async (id, name) => {
+    const { confirmed, reason } = await confirm({
+      description: `Are you sure want to delete ${name} ?`,
+    });
+
+    if (confirmed) {
+      deleteCategory(id)
+    }
+  }
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 2 }}>
@@ -39,9 +58,9 @@ function CategoryTable ({ data = null }) {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-              ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ? data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : data
-          ).map((row) => (
+          )?.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -53,7 +72,14 @@ function CategoryTable ({ data = null }) {
               <TableCell align="center">{row.is_active
                 ? 'Yes'
                 : 'No'}</TableCell>
-              <TableCell align="center"></TableCell>
+              <TableCell align="center">
+                <IconButton color="primary" size="small" onClick={() => showEditModal(row.id)}>
+                  <EditIcon fontSize="inherit" />
+                </IconButton>
+                <IconButton color="error" size="small" onClick={() => handleDelete(row.id, row.name)}>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

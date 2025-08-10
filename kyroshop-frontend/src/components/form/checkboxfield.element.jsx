@@ -17,7 +17,7 @@ function CheckBoxFieldElement({name, label, control, ...props}) {
      {...props}
      render={({ field, fieldState }) => (
        <FormGroup>
-         <FormControlLabel control={<Checkbox {...field} />} label={label} />
+         <FormControlLabel control={<Checkbox checked={field.value} {...field} />} label={label} />
        </FormGroup>
      )}
    />

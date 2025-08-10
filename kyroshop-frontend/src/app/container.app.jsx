@@ -3,6 +3,7 @@ import routeConfig from "./route.config.jsx"
 import { createTheme, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from "mui-sonner"
+import { ConfirmProvider } from "material-ui-confirm"
 
 const theme = createTheme({
   components: {
@@ -25,8 +26,10 @@ const ContainerApp = function () {
     <>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={routeConfig} />
-          <Toaster />
+          <ConfirmProvider>
+            <RouterProvider router={routeConfig} />
+            <Toaster />
+          </ConfirmProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </>
