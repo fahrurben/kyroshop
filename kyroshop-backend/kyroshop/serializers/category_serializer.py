@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     full_name = serializers.CharField(read_only=True)
     slug = serializers.CharField(read_only=True)
+    parent_id = serializers.IntegerField(allow_null=True)
     parent = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by = serializers.SlugRelatedField(read_only=True, slug_field='email')
     updated_by = serializers.SlugRelatedField(read_only=True, slug_field='email')
@@ -37,7 +38,11 @@ class CategorySerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.slug = slugify(validated_data.get('name', instance.name))
         instance.is_active = validated_data.get('is_active', instance.is_active)
-        instance.parent_id = validated_data.get('parent_id', instance.parent_id)
+        parent_id = validated_data.get('parent_id')
+        if parent_id is not None and parent_id != 0:
+            instance.parent = Category.objects.get(id=parent_id)
+        else:
+            instance.parent = None
         instance.updated_by = current_user
         instance.save()
         return instance

@@ -79,7 +79,7 @@ function CategoryModal ({
   }
 
   const onSubmit = (data) => {
-    data.parent_id = Number.parseInt(data.parent_id)
+    data.parent_id = data.parent_id ? data.parent_id : null
     if (id !== null) {
       updateMutation.mutate(data)
     } else {
