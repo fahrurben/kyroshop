@@ -13,6 +13,8 @@ import { z } from 'zod'
 import { useLogin } from '../../hooks/use-login.api.js'
 import { actions as authActions } from '../../stores/auth.store.js'
 import { useNavigate } from 'react-router'
+import { API_URL } from '../../helpers/constant.js'
+import axios from 'axios'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -40,7 +42,10 @@ function LoginView () {
     },
     onSuccess: (data) => {
       authActions.setToken(data.data.access)
-      navigate('/')
+      axios.get(`${API_URL}/profile`).then((response) => {
+        authActions.setUser(response.data)
+        navigate('/')
+      })
     },
   })
 

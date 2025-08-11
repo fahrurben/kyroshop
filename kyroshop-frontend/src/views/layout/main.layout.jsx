@@ -17,33 +17,35 @@ import Button from '@mui/material/Button'
 import useAuth from '../../hooks/use-auth.js'
 import { Menu, MenuItem } from '@mui/material'
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import { actions as authActions } from '../../stores/auth.store.js'
-import { Link } from "react-router"
+import {
+  actions as authActions,
+  store as authStore,
+} from '../../stores/auth.store.js'
 
 const drawerWidth = 240
 const navItems = [
-  {"label": "Home", "route": "/"},
-  {"label": "Products", "route": "/categories"},
+  { 'label': 'Home', 'route': '/' },
+  { 'label': 'Products', 'route': '/categories' },
 ]
 
-function MainLayout(props) {
-  useAuth()
+function MainLayout (props) {
+  const { user } = useAuth()
   const { window } = props
   const navigate = useNavigate()
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const isMenuOpen = Boolean(anchorEl);
+  const isMenuOpen = Boolean(anchorEl)
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState)
   }
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget)
   }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(null)
   }
 
   const handleLogout = () => {
@@ -51,7 +53,7 @@ function MainLayout(props) {
     navigate('/login')
   }
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -77,24 +79,27 @@ function MainLayout(props) {
       <Typography variant="h6" sx={{ my: 2 }}>
         Kyroshop
       </Typography>
-      <Divider />
+      <Divider/>
       <List>
         {navItems.map((item) => (
           <ListItem key={item.label} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.label} onClick={() => navigate(item.route)} />
+              <ListItemText primary={item.label}
+                            onClick={() => navigate(item.route)}/>
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Box>
-  );
+  )
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined
+    ? () => window().document.body
+    : undefined
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+      <CssBaseline/>
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -104,7 +109,7 @@ function MainLayout(props) {
             onClick={handleDrawerToggle}
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
           <Typography
             variant="h6"
@@ -114,6 +119,9 @@ function MainLayout(props) {
             Kyroshop
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{paddingTop: 1.5, marginLeft: 1}}>
+              {`${user.username}`}
+            </Box>
             <IconButton
               size="large"
               edge="end"
@@ -123,7 +131,7 @@ function MainLayout(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <AccountCircle/>
             </IconButton>
           </Box>
         </Toolbar>
@@ -140,15 +148,18 @@ function MainLayout(props) {
           }}
           sx={{
             display: { xs: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
         </Drawer>
       </nav>
       <Box component="main" sx={{ p: 3, minWidth: '100%', minHeight: '100vh' }}>
-        <Toolbar />
-        <Outlet />
+        <Toolbar/>
+        <Outlet/>
       </Box>
     </Box>
   )

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import axios from 'axios'
 
 export default function useAuth () {
-  const { authExpiredAt, authToken } = useSnapshot(authStore)
+  const { authExpiredAt, authToken, user } = useSnapshot(authStore)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -16,4 +16,6 @@ export default function useAuth () {
       navigate('/login')
     }
   }, [])
+
+  return {authExpiredAt, authToken, user}
 }

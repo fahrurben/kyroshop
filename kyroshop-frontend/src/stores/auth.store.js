@@ -20,6 +20,9 @@ const actions = {
     store.authExpiredAt = (new Date()).getTime() + (TOKEN_EXPIRATION_HOUR * 3600)
     axios.defaults.headers.common["Authorization"] = "Bearer " + token
   },
+  setUser: (user) => {
+    store.user = user
+  },
   removeToken: () => {
     store.authToken = null
     store.authExpiredAt = null
