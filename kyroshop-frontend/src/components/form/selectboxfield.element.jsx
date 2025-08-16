@@ -15,7 +15,7 @@ function SelectBoxFieldElement({name, label, options, control, ...props}) {
       control={control}
       {...props}
       render={({ field, fieldState }) => (
-        <FormControl sx={{ minWidth: 120 }} size="small">
+        <FormControl sx={{ minWidth: 120, marginTop: "0.5rem" }} size="small">
           <InputLabel id="demo-simple-select-helper-label">{label}</InputLabel>
           <Select
             size="small"

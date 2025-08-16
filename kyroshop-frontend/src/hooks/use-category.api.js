@@ -51,6 +51,7 @@ export function useGetCategoryById(id) {
       let response = await axios.get(url)
       return response.data
     },
+    enabled: !!id,
   })
 }
 
