@@ -18,9 +18,13 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import { toast } from 'mui-sonner'
 
-import { useCreateProduct } from '../../hooks/use-product.api.js'
+import {
+  useCreateProduct,
+  useUpdateProduct,
+} from '../../hooks/use-product.api.js'
 import { show_form_error_message } from '../../helpers/form.helpers.js'
 import { useNavigate } from 'react-router'
+import { useEffect } from 'react'
 
 const variantSchema = z.object({
   id: z.coerce.number().optional(),
@@ -43,20 +47,22 @@ const formSchema = z.object({
   images: z.array(imageSchema),
 })
 
-function ProductForm ({ categoryOptions }) {
+const initialData = {
+  'name': '',
+  'description': '',
+  'category_id': null,
+  'price': 0,
+  'is_active': null,
+  'variants': [],
+  'images': [],
+}
+
+function ProductForm ({ id = null, categoryOptions, productData = null }) {
   const navigate = useNavigate()
 
-  const { control, register, handleSubmit, setError } = useForm({
+  const { control, reset, register, handleSubmit, setError } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      'name': '',
-      'description': '',
-      'category_id': null,
-      'price': 0,
-      'is_active': null,
-      'variants': [],
-      'images': [],
-    },
+    defaultValues: initialData,
   })
   const {
     fields: variantFields,
@@ -69,6 +75,10 @@ function ProductForm ({ categoryOptions }) {
     remove: removeImage,
   } = useFieldArray({ control: control, name: 'images' })
 
+  useEffect(() => {
+    reset({ ...productData })
+  }, [productData])
+
   const addImage = () => appendImage({
     id: null,
     filename: '',
@@ -80,7 +90,7 @@ function ProductForm ({ categoryOptions }) {
     stock: 0,
   })
 
-  const formMutation = useCreateProduct({
+  let createMutation = useCreateProduct({
     onSuccess: () => {
       toast('Product save successfully')
       navigate('/products')
@@ -90,19 +100,35 @@ function ProductForm ({ categoryOptions }) {
     },
   })
 
+  let updateMutation = useUpdateProduct({
+    id:id,
+    onSuccess: () => {
+      toast('Product save successfully')
+      navigate('/products')
+    },
+    onError: (errors) => {
+      show_form_error_message(errors, setError)
+    },
+  })
+
+  let formMutation = id ? updateMutation : createMuatation
+
   const onSubmit = (data) => {
-    if (data.variants) {
-      data.variants = data.variants.map((item) => {
-        delete item.id
-        return item
-      })
+    if (id===null) {
+      if (data.variants) {
+        data.variants = data.variants.map((item) => {
+          delete item.id
+          return item
+        })
+      }
+      if (data.images) {
+        data.images = data.images.map((item) => {
+          delete item.id
+          return item
+        })
+      }
     }
-    if (data.images) {
-      data.images = data.images.map((item) => {
-        delete item.id
-        return item
-      })
-    }
+
     formMutation.mutate(data)
   }
 
@@ -186,7 +212,7 @@ function ProductForm ({ categoryOptions }) {
 
         <Box display="flex" flexDirection="row" justifyContent="flex-end"
              sx={{ marginTop: 2 }} gap={2}>
-          <Button onClick={() => {}}>Cancel</Button>
+          <Button onClick={() => navigate("/products")}>Cancel</Button>
           <Button variant="contained" type="submit">Save</Button>
         </Box>
       </form>

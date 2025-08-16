@@ -9,7 +9,7 @@ import {
 import ProductForm from './product.form.jsx'
 
 
-function ProductCreate() {
+function ProductcreateView() {
   const queryClient = useQueryClient()
 
   const { data: { results: categoryResults = []} = {}, refetch: refetchAllCategory} = useGetCategoryAll(true)
@@ -28,4 +28,4 @@ function ProductCreate() {
   )
 }
 
-export default ProductCreate
+export default ProductcreateView

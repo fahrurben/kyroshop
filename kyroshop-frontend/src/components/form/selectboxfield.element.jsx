@@ -5,6 +5,7 @@ import {
   OutlinedInput, Select,
 } from '@mui/material'
 import { Controller } from 'react-hook-form'
+import Box from '@mui/material/Box'
 
 
 function SelectBoxFieldElement({name, label, options, control, ...props}) {
@@ -13,13 +14,15 @@ function SelectBoxFieldElement({name, label, options, control, ...props}) {
       name={name}
       label={label}
       control={control}
+      defaultValue=""
       {...props}
       render={({ field, fieldState }) => (
-        <FormControl sx={{ minWidth: 120, marginTop: "0.5rem" }} size="small">
-          <InputLabel id="demo-simple-select-helper-label">{label}</InputLabel>
+        <Box sx={{ minWidth: 120, marginTop: "0.5rem" }}>
+          <InputLabel id={name}>{label}</InputLabel>
           <Select
             size="small"
             label={label}
+            labelId={name}
             {...field}
           >
             <MenuItem value="">
@@ -34,7 +37,7 @@ function SelectBoxFieldElement({name, label, options, control, ...props}) {
           {
             fieldState.error?.message && <FormHelperText>{fieldState.error?.message}</FormHelperText>
           }
-        </FormControl>
+        </Box>
       )}
     />
   )
