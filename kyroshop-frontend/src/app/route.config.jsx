@@ -6,6 +6,7 @@ import CategoryView from '../views/product/category.view.jsx'
 import ProductcreateView from '../views/product/productcreateView.jsx'
 import ProductEditView from '../views/product/productedit.view.jsx'
 import ProductListView from '../views/product/productlist.view.jsx'
+import OrderlistView from '../views/order/orderlist.view.jsx'
 
 const routeConfig = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const routeConfig = createBrowserRouter([
       { path: '/products', element: <ProductListView/> },
       { path: '/products/create', element: <ProductcreateView/> },
       { path: '/products/edit/:id', element: <ProductEditView/> },
+      { path: '/orders', element: <OrderlistView/> },
     ],
   },
 ])

@@ -18,7 +18,7 @@ function SelectBoxFieldElement({name, label, options, control, ...props}) {
       {...props}
       render={({ field, fieldState }) => (
         <Box sx={{ minWidth: 120, marginTop: "0.5rem" }}>
-          <InputLabel id={name}>{label}</InputLabel>
+          {label && <InputLabel id={name}>{label}</InputLabel>}
           <Select
             size="small"
             label={label}

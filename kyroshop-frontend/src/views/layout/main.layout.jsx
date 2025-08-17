@@ -26,6 +26,7 @@ const drawerWidth = 240
 const navItems = [
   { 'label': 'Home', 'route': '/' },
   { 'label': 'Products', 'route': '/products' },
+  { 'label': 'Order', 'route': '/orders' },
 ]
 
 function MainLayout (props) {

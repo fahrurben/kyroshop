@@ -33,10 +33,13 @@ class OrdersView(CreateModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        query = Order.objects.all()
+        queryset  = Order.objects.all()
+        status = self.request.query_params.get('status')
         if user.role == CustomUser.Roles.CUSTOMER:
-            return query.filter(customer=user)
-        return query
+            queryset = queryset.filter(customer=user)
+        if status is not None:
+            queryset = queryset.filter(status=status)
+        return queryset
 
     @action(detail=False,methods=['post'],url_name='checkout')
     def checkout(self, request, *args, **kwargs):
