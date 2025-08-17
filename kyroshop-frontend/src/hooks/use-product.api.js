@@ -1,15 +1,23 @@
 import axios from 'axios'
 import { API_URL } from '../helpers/constant.js'
 import { useMutation, useQuery } from '@tanstack/react-query'
-export function useGetProduct(all= true) {
+export function useGetProduct(search = "", all= true) {
   return useQuery({
-    queryKey: ["products"],
-    queryFn: () => {
+    queryKey: ["products", search],
+    queryFn: async () => {
       let url = `${API_URL}/products`
+      let params = {}
+
       if (all) {
-        url += '?limit=1000'
+        params["limit"] = 1000
       }
-      return axios.get(url)
+      if (search) {
+        params["search"] = search
+      }
+
+      const paramString = new URLSearchParams(params);
+      let response = await axios.get(url + '?' + paramString)
+      return response.data
     }
   })
 }
@@ -55,10 +63,10 @@ export function useUpdateProduct({ id = null, onSuccess, onError }) {
   })
 }
 
-export function useDeleteProduct({ id = null, onSuccess, onError }) {
+export function useDeleteProduct({onSuccess, onError }) {
   return useMutation({
     mutationFn: (formData) => {
-      let url = `${API_URL}/products/${id}`
+      let url = `${API_URL}/products/${formData.id}`
       return axios.delete(url)
     },
     onSuccess: (data) => {

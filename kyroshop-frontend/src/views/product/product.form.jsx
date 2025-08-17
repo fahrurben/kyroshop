@@ -111,7 +111,7 @@ function ProductForm ({ id = null, categoryOptions, productData = null }) {
     },
   })
 
-  let formMutation = id ? updateMutation : createMuatation
+  let formMutation = id ? updateMutation : createMutation
 
   const onSubmit = (data) => {
     if (id===null) {

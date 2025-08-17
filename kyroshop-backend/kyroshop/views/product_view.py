@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+from rest_framework import filters
 
 from ..models.product import Product
 from ..serializers import ProductSerializer
@@ -10,6 +11,8 @@ class ProductView(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
     ordering_fields = ['name']
     ordering = ['name']
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
