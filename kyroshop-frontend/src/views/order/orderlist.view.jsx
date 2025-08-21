@@ -20,6 +20,8 @@ import OrderTable from './order.table.jsx'
 import SelectBoxFieldElement
   from '../../components/form/selectboxfield.element.jsx'
 import { ORDER_STATUS_OPTIONS } from '../../helpers/constant.js'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 
 const formSchema = z.object({
   status: z.string(),
@@ -46,26 +48,28 @@ function OrderlistView() {
   }
 
   return (
-    <Box>
-      <OrderNav />
-      <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-        <Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
-              <SelectBoxFieldElement name="status"
-                                     control={control}
-                                     options={ORDER_STATUS_OPTIONS}
-                                     sx={{ width: "50rem" }}/>
-              <IconButton aria-label="search" type="submit">
-                <SearchIcon/>
-              </IconButton>
-            </Stack>
-          </form>
-        </Box>
-      </Grid>
+    <Card sx={{padding: 1}}>
+      <CardContent>
+        <OrderNav />
+        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
+                <SelectBoxFieldElement name="status"
+                                       control={control}
+                                       options={ORDER_STATUS_OPTIONS}
+                                       sx={{ width: "50rem" }}/>
+                <IconButton aria-label="search" type="submit">
+                  <SearchIcon/>
+                </IconButton>
+              </Stack>
+            </form>
+          </Box>
+        </Grid>
 
-      <OrderTable data={orderResults} />
-    </Box>
+        <OrderTable data={orderResults} />
+      </CardContent>
+    </Card>
   )
 }
 

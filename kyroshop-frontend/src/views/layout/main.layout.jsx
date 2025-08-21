@@ -15,8 +15,13 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import useAuth from '../../hooks/use-auth.js'
-import { Menu, MenuItem } from '@mui/material'
+import { ListItemIcon, Menu, MenuItem } from '@mui/material'
 import AccountCircle from '@mui/icons-material/AccountCircle'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import InventoryIcon from '@mui/icons-material/Inventory'
+import ListAltIcon from '@mui/icons-material/ListAlt'
+import LogoutIcon from '@mui/icons-material/Logout'
+
 import {
   actions as authActions,
   store as authStore,
@@ -24,9 +29,9 @@ import {
 
 const drawerWidth = 240
 const navItems = [
-  { 'label': 'Home', 'route': '/' },
-  { 'label': 'Products', 'route': '/products' },
-  { 'label': 'Order', 'route': '/orders' },
+  { 'label': 'Home', 'route': '/', 'icon': <DashboardIcon />},
+  { 'label': 'Products', 'route': '/products', 'icon': <InventoryIcon />},
+  { 'label': 'Orders', 'route': '/orders', 'icon': <ListAltIcon /> },
 ]
 
 function MainLayout (props) {
@@ -71,7 +76,12 @@ function MainLayout (props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText>Logout</ListItemText>
+      </MenuItem>
     </Menu>
   )
 
@@ -84,10 +94,15 @@ function MainLayout (props) {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.label} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.label}
-                            onClick={() => navigate(item.route)}/>
-            </ListItemButton>
+            <ListItem key={item.label} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.label}
+                              onClick={() => navigate(item.route)} />
+              </ListItemButton>
+            </ListItem>
           </ListItem>
         ))}
       </List>
@@ -158,9 +173,11 @@ function MainLayout (props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3, minWidth: '100%', minHeight: '100vh' }}>
+      <Box component="main" sx={{ backgroundColor: "#F0F2F5", minWidth: '100%', minHeight: '100vh' }}>
         <Toolbar/>
-        <Outlet/>
+        <Box sx={{p: 4}}>
+          <Outlet/>
+        </Box>
       </Box>
     </Box>
   )

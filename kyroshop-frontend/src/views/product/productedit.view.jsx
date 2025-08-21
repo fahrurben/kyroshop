@@ -10,6 +10,8 @@ import ProductForm from './product.form.jsx'
 import { useParams } from 'react-router'
 import { useGetProductById } from '../../hooks/use-product.api.js'
 import { useEffect } from 'react'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 
 
 function ProductEditView() {
@@ -27,14 +29,16 @@ function ProductEditView() {
     (row) => ({ value: row.id, label: row.name }))
 
   return (
-    <Box>
-      <CategoryNav />
-      <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-        <Box sx={{width: "100%"}}>
-          <ProductForm id={id} categoryOptions={categoryOptions} productData={{...product}} />
-        </Box>
-      </Grid>
-    </Box>
+    <Card>
+      <CardContent>
+        <CategoryNav />
+        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
+          <Box sx={{width: "100%"}}>
+            <ProductForm id={id} categoryOptions={categoryOptions} productData={{...product}} />
+          </Box>
+        </Grid>
+      </CardContent>
+    </Card>
   )
 }
 

@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import ProductTable from './product.table.jsx'
 import { useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -20,6 +22,7 @@ import { useDeleteProduct, useGetProduct } from '../../hooks/use-product.api.js'
 import { useNavigate } from 'react-router'
 import { toast } from 'mui-sonner'
 import { show_form_error_message } from '../../helpers/form.helpers.js'
+
 
 const formSchema = z.object({
   search: z.string(),
@@ -65,33 +68,35 @@ function ProductListView() {
   }
 
   return (
-    <Box>
-      <CategoryNav />
-      <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-        <Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
-              <TextField label="Search" variant="outlined"
-                         size="small" {...register("search")}
-                         sx={{ width: "20rem" }}/>
-              <IconButton aria-label="search" type="submit">
-                <SearchIcon/>
-              </IconButton>
-            </Stack>
-          </form>
-        </Box>
-        <Box sx={{ marginLeft: 'auto' }}>
-          <Fab color="primary" aria-label="add" onClick={() => navigate("/products/create")}>
-            <AddIcon/>
-          </Fab>
-        </Box>
-      </Grid>
+    <Card sx={{padding: 1}}>
+      <CardContent>
+        <CategoryNav />
+        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
+                <TextField label="Search" variant="outlined"
+                           size="small" {...register("search")}
+                           sx={{ width: "20rem" }}/>
+                <IconButton aria-label="search" type="submit">
+                  <SearchIcon/>
+                </IconButton>
+              </Stack>
+            </form>
+          </Box>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <Fab color="primary" aria-label="add" onClick={() => navigate("/products/create")}>
+              <AddIcon/>
+            </Fab>
+          </Box>
+        </Grid>
 
-      <ProductTable
-        data={productResults}
-        deleteProduct={deleteProduct}
-      />
-    </Box>
+        <ProductTable
+          data={productResults}
+          deleteProduct={deleteProduct}
+        />
+      </CardContent>
+    </Card>
   )
 }
 

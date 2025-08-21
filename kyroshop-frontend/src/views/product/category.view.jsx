@@ -2,6 +2,8 @@ import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import AddIcon from '@mui/icons-material/Add';
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import CategoryTable from './category.table.jsx'
 import {
   useDeleteCategory,
@@ -97,43 +99,45 @@ function CategoryView() {
   }
 
   return (
-    <Box>
-      <CategoryNav />
-      <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-        <Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
-              <TextField label="Search" variant="outlined"
-                         size="small" {...register("search")}
-                         sx={{ width: "20rem" }}/>
-              <IconButton aria-label="search" type="submit">
-                <SearchIcon/>
-              </IconButton>
-            </Stack>
-          </form>
-        </Box>
-        <Box sx={{ marginLeft: 'auto' }}>
-          <Fab color="primary" aria-label="add" onClick={handleClick}>
-            <AddIcon/>
-          </Fab>
-        </Box>
-      </Grid>
+    <Card sx={{padding: 1}}>
+      <CardContent>
+        <CategoryNav />
+        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
+                <TextField label="Search" variant="outlined"
+                           size="small" {...register("search")}
+                           sx={{ width: "20rem" }}/>
+                <IconButton aria-label="search" type="submit">
+                  <SearchIcon/>
+                </IconButton>
+              </Stack>
+            </form>
+          </Box>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <Fab color="primary" aria-label="add" onClick={handleClick}>
+              <AddIcon/>
+            </Fab>
+          </Box>
+        </Grid>
 
-      <CategoryTable
-        data={data?.results}
-        showEditModal={showEditModal}
-        deleteCategory={deleteCategory}
-      />
-      <CategoryModal
-        open={open}
-        setOpen={setOpen}
-        categoryOptions={categoryOptions}
-        refreshPage={refreshPage}
-        id={selectedId}
-        initialData={formInitialData}
-      />
+        <CategoryTable
+          data={data?.results}
+          showEditModal={showEditModal}
+          deleteCategory={deleteCategory}
+        />
+        <CategoryModal
+          open={open}
+          setOpen={setOpen}
+          categoryOptions={categoryOptions}
+          refreshPage={refreshPage}
+          id={selectedId}
+          initialData={formInitialData}
+        />
+      </CardContent>
 
-    </Box>
+    </Card>
   )
 }
 
