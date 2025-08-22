@@ -10,7 +10,7 @@ import {
   useGetCategory,
   useGetCategoryAll, useGetCategoryById,
 } from '../../hooks/use-category.api.js'
-import { Fab, Stack } from '@mui/material'
+import { Button, Fab, Stack } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -24,6 +24,7 @@ import CategoryModal from './category.modal.jsx'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'mui-sonner'
 import { show_form_error_message } from '../../helpers/form.helpers.js'
+import Typography from '@mui/material/Typography'
 
 const formSchema = z.object({
   search: z.string(),
@@ -102,8 +103,15 @@ function CategoryView() {
     <Card sx={{padding: 1}}>
       <CardContent>
         <CategoryNav />
-        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-          <Box>
+        <Box sx={{marginTop: 2}}>
+          <Button variant="contained" startIcon={<AddIcon />} size="small"
+                  onClick={handleClick}>
+            New
+          </Button>
+        </Box>
+        <Card sx={{marginTop: 2}}>
+          <CardContent>
+            <Typography>Filters</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
                 <TextField label="Search" variant="outlined"
@@ -114,13 +122,8 @@ function CategoryView() {
                 </IconButton>
               </Stack>
             </form>
-          </Box>
-          <Box sx={{ marginLeft: 'auto' }}>
-            <Fab color="primary" aria-label="add" onClick={handleClick}>
-              <AddIcon/>
-            </Fab>
-          </Box>
-        </Grid>
+          </CardContent>
+        </Card>
 
         <CategoryTable
           data={data?.results}

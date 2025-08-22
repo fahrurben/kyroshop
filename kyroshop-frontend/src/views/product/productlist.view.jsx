@@ -1,7 +1,7 @@
 import CategoryNav from './category.nav.jsx'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
-import { Fab, Stack } from '@mui/material'
+import { Button, Fab, Stack } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
@@ -22,6 +22,7 @@ import { useDeleteProduct, useGetProduct } from '../../hooks/use-product.api.js'
 import { useNavigate } from 'react-router'
 import { toast } from 'mui-sonner'
 import { show_form_error_message } from '../../helpers/form.helpers.js'
+import Typography from '@mui/material/Typography'
 
 
 const formSchema = z.object({
@@ -71,10 +72,18 @@ function ProductListView() {
     <Card sx={{padding: 1}}>
       <CardContent>
         <CategoryNav />
-        <Grid container spacing={2} direction="row" sx={{ marginTop: 4 }}>
-          <Box>
+        <Box sx={{marginTop: 2}}>
+          <Button variant="contained" startIcon={<AddIcon />} size="small"
+                  onClick={() => navigate("/products/create")}>
+            New
+          </Button>
+        </Box>
+        <Card sx={{marginTop: 2}}>
+          <CardContent>
+            <Typography>Filters</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="row" spacing={2} alignItems="start" sx={{ marginTop: 1 }}>
+              <Stack direction="row" spacing={2} alignItems="start"
+                     sx={{ marginTop: 1 }}>
                 <TextField label="Search" variant="outlined"
                            size="small" {...register("search")}
                            sx={{ width: "20rem" }}/>
@@ -83,13 +92,8 @@ function ProductListView() {
                 </IconButton>
               </Stack>
             </form>
-          </Box>
-          <Box sx={{ marginLeft: 'auto' }}>
-            <Fab color="primary" aria-label="add" onClick={() => navigate("/products/create")}>
-              <AddIcon/>
-            </Fab>
-          </Box>
-        </Grid>
+          </CardContent>
+        </Card>
 
         <ProductTable
           data={productResults}
